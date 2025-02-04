@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Summary - Floww APIs</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #007bff;
+            color: white;
+            padding: 20px;
+        }
+        .logo {
+            max-width: 150px;
+        }
+        main {
+            padding: 20px;
+        }
+        table {
+            width: 100%;
+            margin-bottom: 20px;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+        .payment-action button {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+        }
+        .hidden {
+            display: none;
+        }
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border-left-color: #007bff;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Payment Summary</h1>
+        <a href="https://gofloww.co/" target="_blank">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTbXhLlOIk-iUpLMcRJoJRxivbYzUy9rWzIaA&s" alt="Floww APIs Logo" class="logo">
+        </a>
+    </header>
+    
+    <main>
+        <section class="payment-details">
+            <h2>Order Details</h2>
+            <table>
+                <tr>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Price (₹)</th>
+                    <th>Subtotal (₹)</th>
+                </tr>
+                <tr>
+                    <td>Product A</td>
+                    <td><input type="number" id="quantity" value="1" min="1" onchange="calculateTotal()"></td>
+                    <td id="price">1000</td>
+                    <td id="subtotal">1000</td>
+                </tr>
+            </table>
+            <p>GST (18%): ₹<span id="tax">180</span></p>
+            <p><strong>Total Amount: ₹<span id="total">1180</span></strong></p>
+        </section>
+        
+        <section class="payment-action">
+            <button id="pay-now" onclick="processPayment()">Pay Now</button>
+            <div id="loading" class="hidden">
+                <p>Payment in progress. Please do not close this window.</p>
+                <div class="spinner"></div>
+            </div>
+            <p id="payment-status" class="hidden"></p>
+        </section>
+    </main>
+    
+    <footer>
+        <p>For support, contact: <a href="mailto:support@flowwapis.com">support@flowwapis.com</a></p>
+    </footer>
+    
+    <script>
+        function calculateTotal() {
+            let quantity = document.getElementById("quantity").value;
+            let price = 1000;
+            let subtotal = quantity * price;
+            let tax = subtotal * 0.18;
+            let total = subtotal + tax;
+            
+            document.getElementById("subtotal").innerText = subtotal;
+            document.getElementById("tax").innerText = tax.toFixed(2);
+            document.getElementById("total").innerText = total.toFixed(2);
+        }
+        
+        function processPayment() {
+            document.getElementById("pay-now").style.display = "none";
+            document.getElementById("loading").classList.remove("hidden");
+            
+            setTimeout(() => {
+                document.getElementById("loading").classList.add("hidden");
+                let success = Math.random() > 0.5;
+                let statusText = success ? "Payment Successful!" : "Payment Failed. Please try again.";
+                let statusColor = success ? "green" : "red";
+                
+                let statusElement = document.getElementById("payment-status");
+                statusElement.innerText = statusText;
+                statusElement.style.color = statusColor;
+                statusElement.classList.remove("hidden");
+            }, 10000);
+        }
+    </script>
+</body>
+</html>
